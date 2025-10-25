@@ -1,3 +1,5 @@
+import { getItem, setItem } from "./localStorage";
+
 export const SESSION_KEY = "ticketapp_session";
 
 export interface User {
@@ -6,23 +8,23 @@ export interface User {
 }
 
 export const signupUser = (user: User): boolean => {
-  const users = JSON.parse(localStorage.getItem("ticketapp_users") || "[]");
+  const users = getItem('ticketapp_users')
   const exists = users.find((u: User) => u.email === user.email);
 
   if (exists) return false;
   users.push(user);
-  localStorage.setItem("ticketapp_users", JSON.stringify(users));
+  setItem("ticketapp_users", user);
   return true;
 };
 
 export const loginUser = (email: string, password: string): boolean => {
-  const users = JSON.parse(localStorage.getItem("ticketapp_users") || "[]");
+  const users = getItem("ticketapp_users");
   const valid = users.find(
     (u: User) => u.email === email && u.password === password
   );
 
   if (valid) {
-    localStorage.setItem(SESSION_KEY, JSON.stringify({ email }));
+    setItem(SESSION_KEY, email)
     return true;
   }
   return false;
@@ -33,5 +35,5 @@ export const logoutUser = (): void => {
 };
 
 export const isAuthenticated = (): boolean => {
-  return !!localStorage.getItem(SESSION_KEY);
+  return !!getItem(SESSION_KEY);
 };

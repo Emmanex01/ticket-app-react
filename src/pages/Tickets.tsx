@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import toast, { Toaster } from "react-hot-toast";
 import { isAuthenticated } from "../utils/auth";
+import { getItem, setItem } from "../utils/localStorage";
 
 type TicketStatus = "open" | "in_progress" | "closed";
 
@@ -39,7 +40,10 @@ const sanitizeTicket = (t: any): Ticket => {
 
 const Tickets = () => {
   const navigate = useNavigate();
-  const [tickets, setTickets] = useState<Ticket[]>([]);
+  const [tickets, setTickets] = useState<Ticket[]>(() => {
+    const tickets = getItem("tickets");
+    return (tickets as Ticket[]) || [];
+  });
   const [editing, setEditing] = useState<Ticket | null>(null);
   const [form, setForm] = useState<{
   title: string;
@@ -51,6 +55,11 @@ const Tickets = () => {
   status: "open",
 });
 
+//Persist ticket
+useEffect(() => {
+  setTickets(tickets)
+}, [tickets])
+
 
   // ✅ Authentication check
  useEffect(() => {
@@ -58,7 +67,7 @@ const Tickets = () => {
     navigate("/auth/login");
   }
 
-  const stored = JSON.parse(localStorage.getItem("tickets") || "[]");
+  const stored = getItem("tickets");
   const sanitized: Ticket[] = Array.isArray(stored)
     ? stored.map((t) => sanitizeTicket(t))
     : [];
@@ -70,7 +79,7 @@ const Tickets = () => {
 
   // ✅ Save tickets to storage whenever updated
   useEffect(() => {
-    localStorage.setItem("tickets", JSON.stringify(tickets));
+    setItem("tickets", tickets)
   }, [tickets]);
 
   const resetForm = () => {
