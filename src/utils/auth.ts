@@ -18,7 +18,7 @@ export const signupUser = (user: User): boolean => {
 };
 
 export const loginUser = (email: string, password: string): boolean => {
-  const users = getItem("ticketapp_users");
+  const users = getItem<User>("ticketapp_users");
   const valid = users.find(
     (u: User) => u.email === email && u.password === password
   );
