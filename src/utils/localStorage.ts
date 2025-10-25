@@ -10,7 +10,7 @@ export function getItem(key: string) {
     try {
         const Item = window.localStorage.getItem(key);
 
-        return Item ? JSON.parse(Item) : undefined;
+        return Item ? JSON.parse(Item) : [];
     } catch (error) {
         console.log(error)
     }
