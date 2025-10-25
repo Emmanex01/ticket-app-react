@@ -13,5 +13,6 @@ export function getItem(key: string) {
         return Item ? JSON.parse(Item) : [];
     } catch (error) {
         console.log(error)
+        return []; // ✅ always return []
     }
 }
