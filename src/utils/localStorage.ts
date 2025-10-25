@@ -1,6 +1,13 @@
 export function setItem(key: string, value: unknown) {
     try {
-        window.localStorage.setItem(key, JSON.stringify(value));
+        const lastStoredItem = getItem(key);
+
+        if (lastStoredItem) {
+            const newItem = [...lastStoredItem, value];
+            window.localStorage.setItem(key, JSON.stringify(newItem));
+        } else {
+            window.localStorage.setItem(key, JSON.stringify([value]));
+        }
     } catch (error) {
         console.error("Cannot get item from localStorage: ",error);
     }
