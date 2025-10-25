@@ -19,12 +19,14 @@ export const signupUser = (user: User): boolean => {
 
 export const loginUser = (email: string, password: string): boolean => {
   const users = getItem<User>("ticketapp_users");
-  // console.log(users);
-  // console.log(users.find(u => u.email === "nwanosike@gmail.com"));
-  const valid = users.find(
+  // convert users to array if it's not already
+  const arrUsers = Array.isArray(users) ? users : [users];
+  console.log(arrUsers);
+  console.log(arrUsers.find(u => u.email === "nwanosike@gmail.com"));
+  const valid = arrUsers.find(
     (u: User) => u.email === email && u.password === password
   );
-
+  console.log(valid);
   if (valid) {
     setItem(SESSION_KEY, email)
     return true;

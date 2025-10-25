@@ -20,6 +20,7 @@ const Login = () => {
     }
 
     const success = loginUser(form.email, form.password);
+    console.log(success);
     if (success) {
       toast.success("Login successful!");
       setTimeout(() => navigate("/dashboard"), 1000);
