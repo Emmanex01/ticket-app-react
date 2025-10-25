@@ -1,25 +1,26 @@
-export function setItem(key: string, value: unknown) {
-    try {
-        const lastStoredItem = getItem(key);
+export function getItem<T = any>(key: string): T[] {
+  try {
+    const item = window.localStorage.getItem(key);
+    if (!item) return [];
+    
+    const parsed = JSON.parse(item);
 
-        if (lastStoredItem) {
-            const newItem = [...lastStoredItem, value];
-            window.localStorage.setItem(key, JSON.stringify(newItem));
-        } else {
-            window.localStorage.setItem(key, JSON.stringify([value]));
-        }
-    } catch (error) {
-        console.error("Cannot get item from localStorage: ",error);
-    }
+    // ✅ Ensure it’s actually an array
+    return Array.isArray(parsed) ? parsed as T[] : [];
+  } catch (error) {
+    console.error("Error reading localStorage:", error);
+    return [];
+  }
 }
 
-export function getItem<T = any>(key: string): T[] {
-    try {
-        const Item = window.localStorage.getItem(key);
+export function setItem<T = any>(key: string, value: T): void {
+  try {
+    const lastStoredItem = getItem<T>(key);
 
-        return Item ? JSON.parse(Item) : [];
-    } catch (error) {
-        console.log(error)
-        return []; // ✅ always return []
-    }
+    // ✅ Always treat it as an array
+    const newItem = [...lastStoredItem, value];
+    window.localStorage.setItem(key, JSON.stringify(newItem));
+  } catch (error) {
+    console.error("Cannot set item in localStorage:", error);
+  }
 }
