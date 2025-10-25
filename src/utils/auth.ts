@@ -8,7 +8,7 @@ export interface User {
 }
 
 export const signupUser = (user: User): boolean => {
-  const users = getItem('ticketapp_users')
+  const users = getItem<User>('ticketapp_users')
   const exists = users.find((u: User) => u.email === user.email);
 
   if (exists) return false;
@@ -35,5 +35,5 @@ export const logoutUser = (): void => {
 };
 
 export const isAuthenticated = (): boolean => {
-  return !!getItem(SESSION_KEY);
+  return !!getItem<any>(SESSION_KEY);
 };
