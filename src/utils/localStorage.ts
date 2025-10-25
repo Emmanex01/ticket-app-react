@@ -15,11 +15,11 @@ export function getItem<T = any>(key: string): T[] {
 
 export function setItem<T = any>(key: string, value: T): void {
   try {
-    const lastStoredItem = getItem<T>(key);
+    // const lastStoredItem = getItem<T>(key);
 
     // ✅ Always treat it as an array
-    const newItem = [...lastStoredItem, value];
-    window.localStorage.setItem(key, JSON.stringify(newItem));
+    // const newItem = [...lastStoredItem, value];
+    window.localStorage.setItem(key, JSON.stringify(value));
   } catch (error) {
     console.error("Cannot set item in localStorage:", error);
   }

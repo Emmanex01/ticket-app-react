@@ -55,10 +55,7 @@ const Tickets = () => {
   status: "open",
 });
 
-//Persist ticket
-useEffect(() => {
-  setTickets(tickets)
-}, [tickets])
+
 
 
   // ✅ Authentication check
@@ -90,7 +87,6 @@ useEffect(() => {
   // ✅ Create / Update ticket
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
     if (!form.title.trim()) {
       toast.error("Title is required");
       return;
@@ -257,7 +253,7 @@ useEffect(() => {
                   <span
                     className={`inline-block text-sm font-medium px-3 py-1 rounded-full ${STATUS_COLORS[t.status]}`}
                   >
-                    {t.status.replace("_", " ").toUpperCase()}
+                    {t.status.includes("_") ? t.status.replace("_", " ").toUpperCase() : t.status.toUpperCase()}
                   </span>
                 </div>
 
